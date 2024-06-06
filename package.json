@@ -1,10 +1,12 @@
 {
   "name": "as2",
   "version": "1.0.0",
-  "description": "My 2nd homework",
-  "main": "index.js",
+  "description": "My last homework",
+  "main": "server.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node server.js", 
+    "dev": "nodemon server.js" 
   },
   "author": "Rus Ilie",
   "license": "ISC",
@@ -25,5 +27,8 @@
   "devDependencies": {
     "jest": "^29.7.0",
     "supertest": "^6.3.4"
+  },
+  "engines": {
+    "node": "20.11.0" 
   }
 }
