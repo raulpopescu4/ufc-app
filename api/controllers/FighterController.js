@@ -1,5 +1,5 @@
 const fighterService = require('../../services/FighterService');
-const validator = require('validator');
+const fightService = require('../../services/FightService');
 
 const getAllFighters = async (req, res) => {
     try {
@@ -12,15 +12,7 @@ const getAllFighters = async (req, res) => {
 
 const addNewFighter = async (req, res) => {
     try {
-        const sanitizedBody = {
-            name: validator.escape(req.body.name),
-            age: validator.toInt(req.body.age),
-            division: validator.escape(req.body.division),
-            record: validator.escape(req.body.record),
-            champion: validator.toBoolean(req.body.champion)
-        };
-
-        const fighter = await fighterService.createFighter(sanitizedBody);
+        const fighter = await fighterService.createFighter(req.body);
         res.status(201).send(fighter);
     } catch (error) {
         res.status(400).send(error);
@@ -29,9 +21,7 @@ const addNewFighter = async (req, res) => {
 
 const getFighterById = async (req, res) => {
     try {
-        const id = validator.escape(req.params.id);
-
-        const fighter = await fighterService.findFighterById(id);
+        const fighter = await fighterService.findFighterById(req.params.id);
         if (fighter) {
             res.json(fighter);
         } else {
@@ -44,16 +34,7 @@ const getFighterById = async (req, res) => {
 
 const updateFighterById = async (req, res) => {
     try {
-        const id = validator.escape(req.params.id);
-        const sanitizedBody = {
-            name: validator.escape(req.body.name),
-            age: validator.toInt(req.body.age),
-            division: validator.escape(req.body.division),
-            record: validator.escape(req.body.record),
-            champion: validator.toBoolean(req.body.champion)
-        };
-
-        const fighter = await fighterService.updateFighterById(id, sanitizedBody);
+        const fighter = await fighterService.updateFighterById(req.params.id, req.body);
         if (fighter) {
             res.json(fighter);
         } else {
@@ -66,10 +47,9 @@ const updateFighterById = async (req, res) => {
 
 const deleteFighterById = async (req, res) => {
     try {
-        const id = validator.escape(req.params.id);
-
-        const result = await fighterService.deleteFighterById(id);
+        const result = await fighterService.deleteFighterById(req.params.id);
         if (result) {
+            await fightService.deleteFightsByFighterId(req.params.id);
             res.status(204).send();
         } else {
             res.status(404).send('Fighter not found');
