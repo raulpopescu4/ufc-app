@@ -5,6 +5,7 @@ const mongoose = require('./db/mongoose');
 const bodyParser = require('body-parser');
 const authRoutes = require('./api/routes/AuthRoutes');
 const fighterRoutes = require('./api/routes/FighterRoutes');
+const fightRoutes = require('./api/routes/FightRoutes')
 const cors = require('cors');
 
 const app = express();
@@ -34,6 +35,7 @@ app.use(bodyParser.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/fighters', fighterRoutes);
+app.use('/api/fights', fightRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
